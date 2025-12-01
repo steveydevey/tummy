@@ -19,16 +19,26 @@ class BowelMovementsController < ApplicationController
 
   def edit
     @bowel_movement = BowelMovement.find(params[:id])
+    @return_to = sanitize_return_to(params[:return_to] || request.referer) || bowel_movements_path
   end
 
   def update
     @bowel_movement = BowelMovement.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || bowel_movements_path
 
     if @bowel_movement.update(bowel_movement_params)
-      redirect_to bowel_movements_path, notice: 'Bowel movement was successfully updated.'
+      redirect_to return_to, notice: 'Bowel movement was successfully updated.'
     else
+      @return_to = return_to
       render :edit, status: :unprocessable_content
     end
+  end
+
+  def destroy
+    @bowel_movement = BowelMovement.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || bowel_movements_path
+    @bowel_movement.destroy
+    redirect_to return_to, notice: 'Bowel movement was successfully deleted.'
   end
 
   private

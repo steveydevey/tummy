@@ -10,25 +10,20 @@
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <thead>
         <tr>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
           <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Consistency</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Actions</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
         </tr>
       </thead>
       <tbody>
         <% @bowel_movements.each do |movement| %>
-          <tr>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;"><%= movement.occurred_at.strftime("%Y-%m-%d %H:%M") %></td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
-              <% if movement.severity.present? %>
-                <%= movement.severity %> - <%= movement.severity_term %>
-              <% else %>
-                -
-              <% end %>
-            </td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
-              <%= link_to "More", edit_bowel_movement_path(movement), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
-            </td>
+          <% 
+            edit_path = edit_bowel_movement_path(movement, return_to: request.url)
+            formatted_date = movement.occurred_at.strftime("%b %d, %Y at %l:%M %p").strip
+            description = movement.severity.present? ? "#{movement.severity} - #{movement.severity_term}" : "-"
+          %>
+          <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #F3E5F5; color: #000;"><%= description %></td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #F3E5F5; color: #000;"><%= formatted_date %></td>
           </tr>
         <% end %>
       </tbody>

@@ -12,19 +12,18 @@
         <tr>
           <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Symptom Type</th>
           <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Severity</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Actions</th>
         </tr>
       </thead>
       <tbody>
         <% @gi_symptoms.each do |symptom| %>
-          <tr>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;"><%= symptom.symptom_type %></td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;"><%= symptom.occurred_at.strftime("%Y-%m-%d %H:%M") %></td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;"><%= symptom.severity.present? ? "#{symptom.severity}/10" : "-" %></td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
-              <%= link_to "More", edit_gi_symptom_path(symptom), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
-            </td>
+          <% 
+            edit_path = edit_gi_symptom_path(symptom, return_to: request.url)
+            formatted_date = symptom.occurred_at.strftime("%b %d, %Y at %l:%M %p").strip
+            description = symptom.severity.present? ? "#{symptom.symptom_type} - #{symptom.severity}/10" : symptom.symptom_type
+          %>
+          <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #E3F2FD; color: #000;"><%= description %></td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #E3F2FD; color: #000;"><%= formatted_date %></td>
           </tr>
         <% end %>
       </tbody>

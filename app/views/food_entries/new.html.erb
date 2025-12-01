@@ -23,22 +23,6 @@
       <%= form.datetime_local_field :consumed_at, id: "food_entry_consumed_at", style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>
     </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const field = document.getElementById('food_entry_consumed_at');
-        if (field && !field.value) {
-          const now = new Date();
-          // Format as YYYY-MM-DDTHH:mm for datetime-local input
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0');
-          const day = String(now.getDate()).padStart(2, '0');
-          const hours = String(now.getHours()).padStart(2, '0');
-          const minutes = String(now.getMinutes()).padStart(2, '0');
-          field.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
-      });
-    </script>
-
     <div style="margin-bottom: 15px;">
       <%= form.label :notes, "Notes", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
       <%= form.text_area :notes, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>

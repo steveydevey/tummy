@@ -19,16 +19,26 @@ class GiSymptomsController < ApplicationController
 
   def edit
     @gi_symptom = GiSymptom.find(params[:id])
+    @return_to = sanitize_return_to(params[:return_to] || request.referer) || gi_symptoms_path
   end
 
   def update
     @gi_symptom = GiSymptom.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || gi_symptoms_path
 
     if @gi_symptom.update(gi_symptom_params)
-      redirect_to gi_symptoms_path, notice: 'GI symptom was successfully updated.'
+      redirect_to return_to, notice: 'GI symptom was successfully updated.'
     else
+      @return_to = return_to
       render :edit, status: :unprocessable_content
     end
+  end
+
+  def destroy
+    @gi_symptom = GiSymptom.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || gi_symptoms_path
+    @gi_symptom.destroy
+    redirect_to return_to, notice: 'GI symptom was successfully deleted.'
   end
 
   private

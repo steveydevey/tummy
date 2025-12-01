@@ -10,13 +10,13 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Food entries routes
-  resources :food_entries
+  resources :food_entries, except: [:show]
 
   # GI symptoms routes
-  resources :gi_symptoms
+  resources :gi_symptoms, except: [:show]
 
   # Bowel movements routes
-  resources :bowel_movements
+  resources :bowel_movements, except: [:show]
 
   # Defines the root path route ("/")
   root "food_entries#index"

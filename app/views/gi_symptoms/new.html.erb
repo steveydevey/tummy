@@ -26,22 +26,6 @@
       <%= form.datetime_local_field :occurred_at, id: "gi_symptom_occurred_at", style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>
     </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const field = document.getElementById('gi_symptom_occurred_at');
-        if (field && !field.value) {
-          const now = new Date();
-          // Format as YYYY-MM-DDTHH:mm for datetime-local input
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0');
-          const day = String(now.getDate()).padStart(2, '0');
-          const hours = String(now.getHours()).padStart(2, '0');
-          const minutes = String(now.getMinutes()).padStart(2, '0');
-          field.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
-      });
-    </script>
-
     <div style="margin-bottom: 15px;">
       <%= form.label :severity, "Severity (1-10, optional)", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
       <%= form.number_field :severity, in: 1..10, step: 1, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>

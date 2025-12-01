@@ -27,16 +27,26 @@ class FoodEntriesController < ApplicationController
 
   def edit
     @food_entry = FoodEntry.find(params[:id])
+    @return_to = sanitize_return_to(params[:return_to] || request.referer) || food_entries_path
   end
 
   def update
     @food_entry = FoodEntry.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || food_entries_path
 
     if @food_entry.update(food_entry_params)
-      redirect_to food_entries_path, notice: 'Food entry was successfully updated.'
+      redirect_to return_to, notice: 'Food entry was successfully updated.'
     else
+      @return_to = return_to
       render :edit, status: :unprocessable_content
     end
+  end
+
+  def destroy
+    @food_entry = FoodEntry.find(params[:id])
+    return_to = sanitize_return_to(params[:return_to]) || food_entries_path
+    @food_entry.destroy
+    redirect_to return_to, notice: 'Food entry was successfully deleted.'
   end
 
   private
