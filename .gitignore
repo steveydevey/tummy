@@ -1,2 +1,7 @@
+log
+log/
 log/*
+log/development.log
 tmp/*
+vendor/javascript/.keep
+tmp/cache/bootsnap/compile-cache-iseq/93/08f178adedafa1
