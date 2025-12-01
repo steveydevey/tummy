@@ -2,9 +2,11 @@ class FoodEntriesController < ApplicationController
   def index
     @food_entries = FoodEntry.recent
     @gi_symptoms = GiSymptom.recent
+    @bowel_movements = BowelMovement.recent
     # Combine and sort by datetime for unified timeline view
     @all_entries = (@food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
-                    @gi_symptoms.map { |s| { type: 'symptom', entry: s, datetime: s.occurred_at } })
+                    @gi_symptoms.map { |s| { type: 'symptom', entry: s, datetime: s.occurred_at } } +
+                    @bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } })
                   .sort_by { |e| e[:datetime] }
                   .reverse
   end
@@ -20,6 +22,20 @@ class FoodEntriesController < ApplicationController
       redirect_to food_entries_path, notice: 'Food entry was successfully created.'
     else
       render :new, status: :unprocessable_content
+    end
+  end
+
+  def edit
+    @food_entry = FoodEntry.find(params[:id])
+  end
+
+  def update
+    @food_entry = FoodEntry.find(params[:id])
+
+    if @food_entry.update(food_entry_params)
+      redirect_to food_entries_path, notice: 'Food entry was successfully updated.'
+    else
+      render :edit, status: :unprocessable_content
     end
   end
 

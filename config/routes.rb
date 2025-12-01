@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   # GI symptoms routes
   resources :gi_symptoms
 
+  # Bowel movements routes
+  resources :bowel_movements
+
   # Defines the root path route ("/")
   root "food_entries#index"
 end

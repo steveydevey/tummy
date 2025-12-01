@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_30_013622) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_01_030841) do
+  create_table "bowel_movements", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.datetime "occurred_at"
+    t.integer "severity"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "food_entries", force: :cascade do |t|
     t.datetime "consumed_at"
     t.datetime "created_at", null: false
