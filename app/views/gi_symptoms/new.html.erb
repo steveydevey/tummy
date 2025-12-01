@@ -1,0 +1,61 @@
+<div style="max-width: 600px;">
+  <h1>New GI Symptom / Bowel Movement</h1>
+
+  <%= form_with model: @gi_symptom, local: true do |form| %>
+    <% if @gi_symptom.errors.any? %>
+      <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0;"><%= pluralize(@gi_symptom.errors.count, "error") %> prohibited this GI symptom from being saved:</h3>
+        <ul style="margin-bottom: 0;">
+          <% @gi_symptom.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :symptom_type, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.select :symptom_type, 
+          options_for_select(GiSymptom::SYMPTOM_TYPES.map { |type| [type, type] }, @gi_symptom.symptom_type),
+          { prompt: 'Select symptom type' },
+          { style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" } %>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :occurred_at, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.datetime_local_field :occurred_at, id: "gi_symptom_occurred_at", style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const field = document.getElementById('gi_symptom_occurred_at');
+        if (field && !field.value) {
+          const now = new Date();
+          // Format as YYYY-MM-DDTHH:mm for datetime-local input
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const day = String(now.getDate()).padStart(2, '0');
+          const hours = String(now.getHours()).padStart(2, '0');
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          field.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+      });
+    </script>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :severity, "Severity (1-10, optional)", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.number_field :severity, in: 1..10, step: 1, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+      <small style="color: #666;">Leave blank for bowel movements</small>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :notes, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.text_area :notes, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <%= form.submit "Create GI Symptom", style: "background-color: #2196F3; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;" %>
+      <%= link_to "Cancel", food_entries_path, style: "margin-left: 10px; color: #666; text-decoration: none;" %>
+    </div>
+  <% end %>
+</div>

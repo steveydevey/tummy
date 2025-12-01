@@ -1,0 +1,52 @@
+<div style="max-width: 600px;">
+  <h1>New Food Entry</h1>
+
+  <%= form_with model: @food_entry, local: true do |form| %>
+    <% if @food_entry.errors.any? %>
+      <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0;"><%= pluralize(@food_entry.errors.count, "error") %> prohibited this food entry from being saved:</h3>
+        <ul style="margin-bottom: 0;">
+          <% @food_entry.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :description, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.text_area :description, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :consumed_at, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.datetime_local_field :consumed_at, id: "food_entry_consumed_at", style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const field = document.getElementById('food_entry_consumed_at');
+        if (field && !field.value) {
+          const now = new Date();
+          // Format as YYYY-MM-DDTHH:mm for datetime-local input
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const day = String(now.getDate()).padStart(2, '0');
+          const hours = String(now.getHours()).padStart(2, '0');
+          const minutes = String(now.getMinutes()).padStart(2, '0');
+          field.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+      });
+    </script>
+
+    <div style="margin-bottom: 15px;">
+      <%= form.label :notes, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.text_area :notes, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <%= form.submit "Create Food Entry", style: "background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;" %>
+      <%= link_to "Cancel", food_entries_path, style: "margin-left: 10px; color: #666; text-decoration: none;" %>
+    </div>
+  <% end %>
+</div>

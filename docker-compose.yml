@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  gitrack-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - RAILS_ENV=production
+      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    volumes:
+      # Mount database directory for persistence
+      - ./db/production.sqlite3:/rails/db/production.sqlite3
+      # Mount storage for Active Storage files
+      - ./storage:/rails/storage
+    command: ./bin/rails server -b 0.0.0.0 -p 80
+    restart: unless-stopped
+

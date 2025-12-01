@@ -1,0 +1,61 @@
+<div>
+  <h1>Food & GI Symptom Tracker</h1>
+
+  <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <%= link_to "Add Food Entry", new_food_entry_path, style: "background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+    <%= link_to "Add GI Symptom / Bowel Movement", new_gi_symptom_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+  </div>
+
+  <% if @all_entries.any? %>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr style="background-color: #f2f2f2;">
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Type</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Description / Symptom</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Date/Time</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Severity</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @all_entries.each do |item| %>
+          <tr style="<%= item[:type] == 'symptom' ? 'background-color: #E3F2FD;' : '' %>">
+            <td style="padding: 12px; border: 1px solid #ddd;">
+              <% if item[:type] == 'food' %>
+                <span style="background-color: #4CAF50; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">FOOD</span>
+              <% else %>
+                <span style="background-color: #2196F3; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">GI</span>
+              <% end %>
+            </td>
+            <td style="padding: 12px; border: 1px solid #ddd;">
+              <% if item[:type] == 'food' %>
+                <%= item[:entry].description %>
+              <% else %>
+                <%= item[:entry].symptom_type %>
+              <% end %>
+            </td>
+            <td style="padding: 12px; border: 1px solid #ddd;">
+              <%= item[:datetime].strftime("%Y-%m-%d %H:%M") %>
+            </td>
+            <td style="padding: 12px; border: 1px solid #ddd;">
+              <% if item[:type] == 'symptom' && item[:entry].severity.present? %>
+                <%= item[:entry].severity %>/10
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td style="padding: 12px; border: 1px solid #ddd;">
+              <%= item[:entry].notes.presence || "-" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="margin-top: 20px; color: #666;">
+      No entries yet. 
+      <%= link_to "Create your first food entry", new_food_entry_path %> or 
+      <%= link_to "add a GI symptom", new_gi_symptom_path %>.
+    </p>
+  <% end %>
+</div>
