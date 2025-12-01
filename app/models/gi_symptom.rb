@@ -7,7 +7,6 @@ class GiSymptom < ApplicationRecord
 
   # Common symptom types
   SYMPTOM_TYPES = [
-    'Bowel Movement',
     'Nausea',
     'Pain',
     'Bloating',

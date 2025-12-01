@@ -1,0 +1,39 @@
+<div>
+  <h1>Bowel Movements</h1>
+
+  <div style="margin-bottom: 20px;">
+    <%= link_to "Add New Bowel Movement", new_bowel_movement_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+    <%= link_to "Back to Main View", food_entries_path, style: "margin-left: 10px; color: #666; text-decoration: none;" %>
+  </div>
+
+  <% if @bowel_movements.any? %>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Consistency</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bowel_movements.each do |movement| %>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;"><%= movement.occurred_at.strftime("%Y-%m-%d %H:%M") %></td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
+              <% if movement.severity.present? %>
+                <%= movement.severity %> - <%= movement.severity_term %>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
+              <%= link_to "More", edit_bowel_movement_path(movement), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="margin-top: 20px; color: #666;">No bowel movements yet. <%= link_to "Create your first entry", new_bowel_movement_path %>.</p>
+  <% end %>
+</div>

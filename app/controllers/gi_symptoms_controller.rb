@@ -17,6 +17,20 @@ class GiSymptomsController < ApplicationController
     end
   end
 
+  def edit
+    @gi_symptom = GiSymptom.find(params[:id])
+  end
+
+  def update
+    @gi_symptom = GiSymptom.find(params[:id])
+
+    if @gi_symptom.update(gi_symptom_params)
+      redirect_to gi_symptoms_path, notice: 'GI symptom was successfully updated.'
+    else
+      render :edit, status: :unprocessable_content
+    end
+  end
+
   private
 
   def gi_symptom_params

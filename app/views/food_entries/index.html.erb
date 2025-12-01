@@ -3,49 +3,62 @@
 
   <div style="margin-bottom: 20px; display: flex; gap: 10px;">
     <%= link_to "Add Food Entry", new_food_entry_path, style: "background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-    <%= link_to "Add GI Symptom / Bowel Movement", new_gi_symptom_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+    <%= link_to "Add GI Symptom", new_gi_symptom_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
+    <%= link_to "Add Bowel Movement", new_bowel_movement_path, style: "background-color: #9C27B0; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
   </div>
 
   <% if @all_entries.any? %>
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <thead>
-        <tr style="background-color: #f2f2f2;">
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Type</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Description / Symptom</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Date/Time</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Severity</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Notes</th>
+        <tr>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Type</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Description / Symptom</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Date/Time</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Severity</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Actions</th>
         </tr>
       </thead>
       <tbody>
         <% @all_entries.each do |item| %>
-          <tr style="<%= item[:type] == 'symptom' ? 'background-color: #E3F2FD;' : '' %>">
-            <td style="padding: 12px; border: 1px solid #ddd;">
+          <tr>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
               <% if item[:type] == 'food' %>
                 <span style="background-color: #4CAF50; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">FOOD</span>
+              <% elsif item[:type] == 'bowel_movement' %>
+                <span style="background-color: #9C27B0; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">BM</span>
               <% else %>
                 <span style="background-color: #2196F3; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">GI</span>
               <% end %>
             </td>
-            <td style="padding: 12px; border: 1px solid #ddd;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
               <% if item[:type] == 'food' %>
                 <%= item[:entry].description %>
+              <% elsif item[:type] == 'bowel_movement' %>
+                Bowel Movement
               <% else %>
                 <%= item[:entry].symptom_type %>
               <% end %>
             </td>
-            <td style="padding: 12px; border: 1px solid #ddd;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
               <%= item[:datetime].strftime("%Y-%m-%d %H:%M") %>
             </td>
-            <td style="padding: 12px; border: 1px solid #ddd;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
               <% if item[:type] == 'symptom' && item[:entry].severity.present? %>
                 <%= item[:entry].severity %>/10
+              <% elsif item[:type] == 'bowel_movement' && item[:entry].severity.present? %>
+                <%= item[:entry].severity %> - <%= item[:entry].severity_term %>
               <% else %>
                 -
               <% end %>
             </td>
-            <td style="padding: 12px; border: 1px solid #ddd;">
-              <%= item[:entry].notes.presence || "-" %>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #ffffff; color: #000;">
+              <% if item[:type] == 'food' %>
+                <%= link_to "More", edit_food_entry_path(item[:entry]), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
+              <% elsif item[:type] == 'bowel_movement' %>
+                <%= link_to "More", edit_bowel_movement_path(item[:entry]), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
+              <% else %>
+                <%= link_to "More", edit_gi_symptom_path(item[:entry]), style: "background-color: #FF9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; display: inline-block;" %>
+              <% end %>
             </td>
           </tr>
         <% end %>
@@ -54,8 +67,9 @@
   <% else %>
     <p style="margin-top: 20px; color: #666;">
       No entries yet. 
-      <%= link_to "Create your first food entry", new_food_entry_path %> or 
-      <%= link_to "add a GI symptom", new_gi_symptom_path %>.
+      <%= link_to "Create your first food entry", new_food_entry_path %>, 
+      <%= link_to "add a GI symptom", new_gi_symptom_path %>, or 
+      <%= link_to "add a bowel movement", new_bowel_movement_path %>.
     </p>
   <% end %>
 </div>
