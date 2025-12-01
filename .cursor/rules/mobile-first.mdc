@@ -1,0 +1,77 @@
+# Mobile-First Design Standards
+
+## Overview
+
+This application is designed as a **mobile-first** application. All design decisions, UI components, and user experience considerations must prioritize mobile device usage.
+
+## Core Principles
+
+1. **Mobile-First Approach**: Design for mobile devices first, then enhance for larger screens
+2. **Touch-Friendly**: All interactive elements must be easily tappable on mobile devices
+3. **Responsive Layout**: Ensure the application works well on all screen sizes
+4. **Performance**: Optimize for mobile network conditions and device capabilities
+
+## Design Guidelines
+
+### Layout & Spacing
+- Use flexible layouts that adapt to small screens
+- Ensure adequate spacing between interactive elements (minimum 44x44px touch targets)
+- Avoid fixed-width elements that don't work on small screens
+- Use single-column layouts on mobile when possible
+
+### Typography
+- Use readable font sizes (minimum 16px for body text to prevent auto-zoom on iOS)
+- Ensure sufficient line height for readability on small screens
+- Use relative units (rem, em) rather than fixed pixels where appropriate
+
+### Forms & Inputs
+- Make form fields full-width on mobile
+- Use appropriate input types (date, time, email, etc.) for mobile keyboards
+- Ensure form fields are large enough for easy interaction
+- Group related fields logically
+- Provide clear labels and error messages
+
+### Navigation
+- Keep navigation simple and accessible
+- Use touch-friendly button sizes
+- Consider bottom navigation for frequently accessed items
+- Ensure navigation works with thumb-reach zones
+
+### Tables & Lists
+- Consider card-based layouts instead of tables on mobile
+- If tables are necessary, make them horizontally scrollable or stack columns
+- Use clear visual hierarchy
+
+### Images & Media
+- Optimize images for mobile bandwidth
+- Use responsive images that scale appropriately
+- Ensure images don't break layout on small screens
+
+### Colors & Contrast
+- Ensure sufficient color contrast for readability
+- Test on various screen brightness levels
+- Consider dark mode compatibility
+
+### Performance
+- Minimize HTTP requests
+- Optimize CSS and JavaScript
+- Use lazy loading where appropriate
+- Test on slower network connections
+
+## Implementation Notes
+
+- All new UI components should be tested on mobile devices or mobile emulators
+- When in doubt, prioritize mobile usability over desktop features
+- Consider progressive enhancement: start with mobile, enhance for larger screens
+- Use CSS media queries with mobile-first approach (min-width, not max-width)
+
+## Testing Checklist
+
+- [ ] Test on actual mobile devices (iOS and Android)
+- [ ] Verify touch targets are adequately sized
+- [ ] Check form usability on mobile keyboards
+- [ ] Test navigation with one-handed use
+- [ ] Verify readability on small screens
+- [ ] Test performance on slower connections
+- [ ] Check horizontal scrolling behavior
+- [ ] Verify all interactive elements are accessible

@@ -3,7 +3,7 @@
 
   <div style="margin-bottom: 20px;">
     <%= link_to "Add New GI Symptom", new_gi_symptom_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-    <%= link_to "Back to Main View", food_entries_path, style: "margin-left: 10px; color: #666; text-decoration: none;" %>
+    <%= link_to "Back to Main View", food_entries_path, style: "margin-left: 10px; color: #000; text-decoration: none;" %>
   </div>
 
   <% if @gi_symptoms.any? %>
@@ -30,6 +30,6 @@
       </tbody>
     </table>
   <% else %>
-    <p style="margin-top: 20px; color: #666;">No GI symptoms yet. <%= link_to "Create your first entry", new_gi_symptom_path %>.</p>
+    <p style="margin-top: 20px; color: #000;">No GI symptoms yet. <%= link_to "Create your first entry", new_gi_symptom_path %>.</p>
   <% end %>
 </div>

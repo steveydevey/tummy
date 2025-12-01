@@ -14,7 +14,7 @@
     <% end %>
 
     <div style="margin-bottom: 15px;">
-      <%= form.label :description, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.label :description, "Food", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
       <%= form.text_area :description, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>
     </div>
 
@@ -24,13 +24,13 @@
     </div>
 
     <div style="margin-bottom: 15px;">
-      <%= form.label :notes, style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
+      <%= form.label :notes, "Notes", style: "display: block; margin-bottom: 5px; font-weight: bold;" %>
       <%= form.text_area :notes, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; background-color: #ffffff; color: #000;" %>
     </div>
 
     <div style="margin-top: 20px;">
       <%= form.submit "Update Food Entry", style: "background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;" %>
-      <%= link_to "Cancel", food_entries_path, style: "margin-left: 10px; color: #666; text-decoration: none;" %>
+      <%= link_to "Cancel", food_entries_path, style: "margin-left: 10px; color: #000; text-decoration: none;" %>
     </div>
   <% end %>
 </div>

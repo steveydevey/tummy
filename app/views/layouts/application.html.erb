@@ -1,6 +1,14 @@
 <!DOCTYPE html>
-<html style="background-color: #ffffff;">
+<html style="background-color: #ffffff; color: #000;">
   <head>
+    <style>
+      body, h1, h2, h3, h4, h5, h6, p, a, span, div {
+        color: #000;
+      }
+      a {
+        color: #000;
+      }
+    </style>
     <title><%= content_for(:title) || "Gitrack" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +30,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
-  <body style="margin: 0; padding: 0; background-color: #ffffff;">
+  <body style="margin: 0; padding: 0; background-color: #ffffff; color: #000;">
     <div style="display: flex; min-height: 100vh;">
       <!-- Left Sidebar -->
       <div style="width: 200px; background-color: #f5f5f5; padding: 20px; border-right: 1px solid #ddd; flex-shrink: 0;">
