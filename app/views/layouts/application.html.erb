@@ -36,9 +36,12 @@
     <!-- Header -->
     <header style="background-color: #f5f5f5; padding: 15px 20px; border-bottom: 1px solid #ddd;">
       <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
-        <h1 style="margin: 0; font-size: 20px; font-weight: bold; color: #000; text-align: center;">
-          <%= content_for(:page_title) || "Tummy" %>
-        </h1>
+        <%= link_to root_path, style: "display: flex; align-items: center; text-decoration: none; gap: 10px;" do %>
+          <%= image_tag "tummy.png", alt: "Tummy Logo", style: "max-width: 40px; height: auto;" %>
+          <h1 style="margin: 0; font-size: 20px; font-weight: bold; color: #000;">
+            <%= content_for(:page_title) || "Tummy" %>
+          </h1>
+        <% end %>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
         <%= link_to "Add Food", new_food_entry_path(return_to: request.url), style: "background-color: #4CAF50; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>

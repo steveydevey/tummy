@@ -16,3 +16,7 @@ tmp/cache/bootsnap/compile-cache-iseq/93/08f178adedafa1
 .env.local
 .env.*.local
 
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
