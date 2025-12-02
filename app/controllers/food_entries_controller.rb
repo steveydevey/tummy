@@ -4,8 +4,18 @@ class FoodEntriesController < ApplicationController
     
     # Only show all entries on root path, not on /food_entries
     if request.path == root_path
-      @bowel_movements = BowelMovement.recent
-      @accidents = Accident.recent
+      # Parse date parameter, default to today (in user's timezone)
+      begin
+        @selected_date = params[:date].present? ? Date.parse(params[:date]) : Time.zone.today
+      rescue ArgumentError
+        @selected_date = Time.zone.today
+      end
+      
+      # Filter entries by selected date
+      @food_entries = FoodEntry.on_date(@selected_date).recent
+      @bowel_movements = BowelMovement.on_date(@selected_date).recent
+      @accidents = Accident.on_date(@selected_date).recent
+      
       # Combine and sort by datetime for unified timeline view
       @all_entries = (@food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
                       @bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } } +
@@ -17,6 +27,20 @@ class FoodEntriesController < ApplicationController
       # Show only food entries when accessing /food_entries
       @show_all_entries = false
     end
+  end
+
+  def timeline
+    # Show all entries without date filtering
+    @food_entries = FoodEntry.recent
+    @bowel_movements = BowelMovement.recent
+    @accidents = Accident.recent
+    
+    # Combine and sort by datetime for unified timeline view
+    @all_entries = (@food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
+                    @bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } } +
+                    @accidents.map { |a| { type: 'accident', entry: a, datetime: a.occurred_at } })
+                  .sort_by { |e| e[:datetime] }
+                  .reverse
   end
 
   def new

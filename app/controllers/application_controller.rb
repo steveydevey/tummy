@@ -5,7 +5,24 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  # Set timezone from cookie (set by JavaScript) or fall back to TZ env var or UTC
+  before_action :set_timezone
+
   private
+
+  def set_timezone
+    # Get timezone from cookie (set by JavaScript from browser)
+    timezone = cookies[:user_timezone]
+    
+    # Fall back to TZ environment variable or UTC
+    timezone ||= ENV.fetch('TZ', 'UTC')
+    
+    # Set the timezone for this request
+    Time.zone = timezone
+  rescue TZInfo::InvalidTimezoneIdentifier
+    # If timezone is invalid, fall back to UTC
+    Time.zone = 'UTC'
+  end
 
   def sanitize_return_to(url)
     return nil if url.blank?
@@ -31,6 +48,7 @@ class ApplicationController < ActionController::Base
         food_entries_path.chomp('/') => food_entries_path,
         bowel_movements_path.chomp('/') => bowel_movements_path,
         accidents_path.chomp('/') => accidents_path,
+        timeline_path.chomp('/') => timeline_path,
         root_path.chomp('/') => root_path,
         '/' => root_path
       }
