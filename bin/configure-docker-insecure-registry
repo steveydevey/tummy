@@ -1,0 +1,52 @@
+#!/bin/bash
+# Helper script to configure Docker for insecure registry access
+# This adds nas.lan:5003 to Docker's insecure registries list
+
+set -e
+
+REGISTRY_HOST="nas.lan"
+REGISTRY_PORT="5003"
+DAEMON_JSON="/etc/docker/daemon.json"
+
+if [ "$EUID" -ne 0 ]; then 
+  echo "This script must be run as root (use sudo)"
+  exit 1
+fi
+
+echo "Configuring Docker to allow insecure registry: ${REGISTRY_HOST}:${REGISTRY_PORT}"
+
+# Backup existing daemon.json if it exists
+if [ -f "$DAEMON_JSON" ]; then
+  cp "$DAEMON_JSON" "${DAEMON_JSON}.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "Backed up existing $DAEMON_JSON"
+fi
+
+# Create or update daemon.json
+if [ -f "$DAEMON_JSON" ]; then
+  # Use jq if available, otherwise use sed/python
+  if command -v jq >/dev/null 2>&1; then
+    # Add insecure-registries if not present, or add to existing array
+    jq ".insecure-registries = ((.insecure-registries // []) + [\"${REGISTRY_HOST}:${REGISTRY_PORT}\"] | unique)" "$DAEMON_JSON" > "${DAEMON_JSON}.tmp" && mv "${DAEMON_JSON}.tmp" "$DAEMON_JSON"
+  else
+    # Fallback: simple sed-based approach (may not work for all JSON structures)
+    echo "Warning: jq not found. Manual editing may be required."
+    echo "Add this to $DAEMON_JSON:"
+    echo "  \"insecure-registries\": [\"${REGISTRY_HOST}:${REGISTRY_PORT}\"]"
+    exit 1
+  fi
+else
+  # Create new daemon.json
+  cat > "$DAEMON_JSON" <<EOF
+{
+  "insecure-registries": ["${REGISTRY_HOST}:${REGISTRY_PORT}"]
+}
+EOF
+fi
+
+echo "Updated $DAEMON_JSON"
+echo ""
+echo "Restart Docker daemon to apply changes:"
+echo "  sudo systemctl restart docker"
+echo "  # or"
+echo "  sudo service docker restart"
+

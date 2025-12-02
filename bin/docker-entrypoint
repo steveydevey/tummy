@@ -1,7 +1,14 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
+# Ensure storage directory exists with proper permissions
+# This handles both volume-mounted and non-volume-mounted scenarios
+mkdir -p /rails/storage
+chmod 755 /rails/storage 2>/dev/null || true
+
+# Check if we're running the Rails server (could be via ./bin/rails server or ./bin/thrust ./bin/rails server)
+# Check if "server" is in the arguments and "./bin/rails" is present
+if echo "$@" | grep -q "server" && (echo "$@" | grep -q "./bin/rails" || echo "$@" | grep -q "bin/rails"); then
+  echo "Running database migrations..."
   ./bin/rails db:prepare
 fi
 

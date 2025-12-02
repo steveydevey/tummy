@@ -1,0 +1,91 @@
+#!/bin/bash
+# Build and push Docker image with version tag while maintaining :latest for backward compatibility
+#
+# Usage:
+#   TUMMY_VERSION=v1.2.3 ./bin/build-and-push
+#   # or let it auto-detect from git tag
+#   ./bin/build-and-push
+
+set -e
+
+REGISTRY="nas.lan:5003"
+IMAGE_NAME="gitrack"
+FULL_IMAGE="${REGISTRY}/${IMAGE_NAME}"
+
+# Determine version from TUMMY_VERSION env var, git tag, or generate one
+if [ -n "$TUMMY_VERSION" ]; then
+  VERSION="$TUMMY_VERSION"
+elif git describe --tags --exact-match HEAD 2>/dev/null; then
+  VERSION=$(git describe --tags --exact-match HEAD)
+elif git describe --tags HEAD 2>/dev/null; then
+  VERSION=$(git describe --tags HEAD | sed 's/-.*//')
+else
+  # Generate version from git commit hash if no tag exists
+  VERSION="dev-$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+fi
+
+echo "Building image with version: $VERSION"
+echo "Registry: $REGISTRY (insecure)"
+echo "Image: $IMAGE_NAME"
+
+# Build the image (using podman if available, otherwise docker)
+BUILD_CMD="docker"
+PUSH_FLAGS=""
+if command -v podman >/dev/null 2>&1 && ! docker info >/dev/null 2>&1; then
+  BUILD_CMD="podman"
+  # Podman supports --tls-verify=false for insecure registries
+  PUSH_FLAGS="--tls-verify=false"
+elif command -v docker >/dev/null 2>&1; then
+  # For Docker, check if insecure registry is configured
+  # If not, we'll try to use HTTP explicitly or provide instructions
+  if ! docker info 2>/dev/null | grep -q "Insecure Registries.*${REGISTRY%:*}"; then
+    echo "Warning: Docker may need insecure registry configuration for ${REGISTRY}"
+    echo "  Add to /etc/docker/daemon.json: {\"insecure-registries\": [\"${REGISTRY%:*}:5003\"]}"
+    echo "  Or use HTTP explicitly (will attempt)..."
+  fi
+fi
+
+# Build the image with TUMMY_VERSION as build argument
+echo "Building image..."
+$BUILD_CMD build -f Containerfile --build-arg TUMMY_VERSION="${VERSION}" -t "${FULL_IMAGE}:${VERSION}" .
+
+# Tag as latest for backward compatibility
+echo "Tagging as latest..."
+$BUILD_CMD tag "${FULL_IMAGE}:${VERSION}" "${FULL_IMAGE}:latest"
+
+# Push both tags with insecure registry support
+echo "Pushing version tag: ${FULL_IMAGE}:${VERSION}"
+if ! $BUILD_CMD push $PUSH_FLAGS "${FULL_IMAGE}:${VERSION}"; then
+  if [ "$BUILD_CMD" = "docker" ]; then
+    echo ""
+    echo "ERROR: Failed to push to insecure registry."
+    echo ""
+    echo "To fix this, configure Docker for insecure registry access:"
+    echo "  sudo ./bin/configure-docker-insecure-registry"
+    echo "  sudo systemctl restart docker"
+    echo ""
+    echo "Or manually add to /etc/docker/daemon.json:"
+    echo "  {"
+    echo "    \"insecure-registries\": [\"nas.lan:5003\"]"
+    echo "  }"
+    echo "Then restart Docker: sudo systemctl restart docker"
+    exit 1
+  else
+    exit 1
+  fi
+fi
+
+echo "Pushing latest tag: ${FULL_IMAGE}:latest"
+if ! $BUILD_CMD push $PUSH_FLAGS "${FULL_IMAGE}:latest"; then
+  echo "ERROR: Failed to push latest tag"
+  exit 1
+fi
+
+echo ""
+echo "✓ Successfully pushed:"
+echo "  - ${FULL_IMAGE}:${VERSION}"
+echo "  - ${FULL_IMAGE}:latest"
+echo ""
+echo "Existing deployments using '${FULL_IMAGE}:latest' will continue to work."
+echo "New deployments can use '${FULL_IMAGE}:${VERSION}' for version pinning."
+

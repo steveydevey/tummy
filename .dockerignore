@@ -49,3 +49,34 @@
 # Ignore Docker-related files
 /.dockerignore
 /Dockerfile*
+/Containerfile*
+
+# Ignore documentation and project files
+/README.md
+/ARCHITECTURE.md
+/PROJECT_PLAN.md
+/SETUP_COMPLETE.md
+*.md
+
+# Ignore test files and specs
+/spec/
+/test/
+
+# Ignore development database files
+/storage/*.sqlite3
+/storage/*.sqlite3-*
+
+# Ignore cache and temporary build artifacts
+/tmp/cache/
+/vendor/cache/
+
+# Ignore IDE and editor files
+/.vscode/
+/.idea/
+*.swp
+*.swo
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db

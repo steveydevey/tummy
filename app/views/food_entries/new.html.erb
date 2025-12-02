@@ -1,5 +1,5 @@
+<% content_for :page_title, "New Food Entry" %>
 <div style="max-width: 600px;">
-  <h1>New Food Entry</h1>
 
   <%= form_with model: @food_entry, local: true do |form| %>
     <% if @food_entry.errors.any? %>

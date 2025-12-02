@@ -1,0 +1,30 @@
+<% content_for :page_title, "Accidents" %>
+<div>
+
+  <% if @accidents.any? %>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Type</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @accidents.each do |accident| %>
+          <% 
+            edit_path = edit_accident_path(accident, return_to: request.url)
+            formatted_date = accident.occurred_at.strftime("%b %d, %Y at %l:%M %p").strip
+            type_label = accident.accident_type_label || "-"
+          %>
+          <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #FFF3E0; color: #000;"><%= type_label %></td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #FFF3E0; color: #000;"><%= formatted_date %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="margin-top: 20px; color: #000;">No accidents yet. <%= link_to "Create your first entry", new_accident_path %>.</p>
+  <% end %>
+</div>
+

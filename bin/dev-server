@@ -1,5 +1,5 @@
 #!/bin/bash
 export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 cd "$(dirname "$0")/.."
-bundle exec rails server
+bundle exec rails server -b 0.0.0.0 -p 3010
 

@@ -29,8 +29,8 @@ class ApplicationController < ActionController::Base
       # Get the exact safe index paths (no IDs, no edit, no new)
       safe_paths = {
         food_entries_path.chomp('/') => food_entries_path,
-        gi_symptoms_path.chomp('/') => gi_symptoms_path,
         bowel_movements_path.chomp('/') => bowel_movements_path,
+        accidents_path.chomp('/') => accidents_path,
         root_path.chomp('/') => root_path,
         '/' => root_path
       }

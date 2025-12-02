@@ -1,10 +1,5 @@
+<% content_for :page_title, "Bowel Movements" %>
 <div>
-  <h1>Bowel Movements</h1>
-
-  <div style="margin-bottom: 20px;">
-    <%= link_to "Add New Bowel Movement", new_bowel_movement_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-    <%= link_to "Back to Main View", food_entries_path, style: "margin-left: 10px; color: #000; text-decoration: none;" %>
-  </div>
 
   <% if @bowel_movements.any? %>
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">

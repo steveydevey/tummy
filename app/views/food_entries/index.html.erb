@@ -1,79 +1,98 @@
+<% content_for :page_title, @show_all_entries ? "Food & Poop & GI Symptom Tracker" : "Food Entries" %>
 <div>
-  <h1>Food & GI Symptom Tracker</h1>
 
-  <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-    <%= link_to "Add Food Entry", new_food_entry_path, style: "background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-    <%= link_to "Add GI Symptom", new_gi_symptom_path, style: "background-color: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-    <%= link_to "Add Bowel Movement", new_bowel_movement_path, style: "background-color: #9C27B0; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block;" %>
-  </div>
-
-  <% if @all_entries.any? %>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-      <thead>
-        <tr>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Type</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Description / Symptom</th>
-          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Date/Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @all_entries.each do |item| %>
-          <% 
-            # Determine background color and edit path
-            if item[:type] == 'food'
-              bg_color = '#E8F5E9'
-              edit_path = edit_food_entry_path(item[:entry], return_to: request.url)
-            elsif item[:type] == 'bowel_movement'
-              bg_color = '#F3E5F5'
-              edit_path = edit_bowel_movement_path(item[:entry], return_to: request.url)
-            else
-              bg_color = '#E3F2FD'
-              edit_path = edit_gi_symptom_path(item[:entry], return_to: request.url)
-            end
-            
-            # Format date/time
-            formatted_date = item[:datetime].strftime("%b %d, %Y at %l:%M %p").strip
-          %>
-          <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
-              <% if item[:type] == 'food' %>
-                <span style="background-color: #4CAF50; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">FOOD</span>
-              <% elsif item[:type] == 'bowel_movement' %>
-                <span style="background-color: #9C27B0; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">BM</span>
-              <% else %>
-                <span style="background-color: #2196F3; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">GI</span>
-              <% end %>
-            </td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
-              <% if item[:type] == 'food' %>
-                <%= item[:entry].description %>
-              <% elsif item[:type] == 'bowel_movement' %>
-                <% if item[:entry].severity.present? %>
-                  <%= item[:entry].severity %> - <%= item[:entry].severity_term %>
-                <% else %>
-                  -
-                <% end %>
-              <% else %>
-                <% if item[:entry].severity.present? %>
-                  <%= item[:entry].symptom_type %> - <%= item[:entry].severity %>/10
-                <% else %>
-                  <%= item[:entry].symptom_type %>
-                <% end %>
-              <% end %>
-            </td>
-            <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
-              <%= formatted_date %>
-            </td>
+  <% if @show_all_entries %>
+    <%# Unified timeline view for root path %>
+    <% if @all_entries.any? %>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+          <tr>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Type</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Description / Symptom</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Date/Time</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @all_entries.each do |item| %>
+            <% 
+              # Determine background color and edit path
+              if item[:type] == 'food'
+                bg_color = '#E8F5E9'
+                edit_path = edit_food_entry_path(item[:entry], return_to: request.url)
+              elsif item[:type] == 'bowel_movement'
+                bg_color = '#F3E5F5'
+                edit_path = edit_bowel_movement_path(item[:entry], return_to: request.url)
+              elsif item[:type] == 'accident'
+                bg_color = '#FFF3E0'
+                edit_path = edit_accident_path(item[:entry], return_to: request.url)
+              end
+              
+              # Format date/time
+              formatted_date = item[:datetime].strftime("%b %d, %Y at %l:%M %p").strip
+            %>
+            <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+              <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
+                <% if item[:type] == 'food' %>
+                  <span style="background-color: #4CAF50; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">FOOD</span>
+                <% elsif item[:type] == 'bowel_movement' %>
+                  <span style="background-color: #9C27B0; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">BM</span>
+                <% elsif item[:type] == 'accident' %>
+                  <span style="background-color: #FF9800; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">ACCIDENT</span>
+                <% end %>
+              </td>
+              <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
+                <% if item[:type] == 'food' %>
+                  <%= item[:entry].description %>
+                <% elsif item[:type] == 'bowel_movement' %>
+                  <% if item[:entry].severity.present? %>
+                    <%= item[:entry].severity %> - <%= item[:entry].severity_term %>
+                  <% else %>
+                    -
+                  <% end %>
+                <% elsif item[:type] == 'accident' %>
+                  <%= item[:entry].accident_type_label || '-' %>
+                <% end %>
+              </td>
+              <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
+                <%= formatted_date %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p style="margin-top: 20px; color: #000;">
+        No entries yet. 
+        <%= link_to "Create your first food entry", new_food_entry_path %>, 
+        <%= link_to "add a bowel movement", new_bowel_movement_path %>, or 
+        <%= link_to "add an accident", new_accident_path %>.
+      </p>
+    <% end %>
   <% else %>
-    <p style="margin-top: 20px; color: #000;">
-      No entries yet. 
-      <%= link_to "Create your first food entry", new_food_entry_path %>, 
-      <%= link_to "add a GI symptom", new_gi_symptom_path %>, or 
-      <%= link_to "add a bowel movement", new_bowel_movement_path %>.
-    </p>
+    <%# Food entries only view for /food_entries path %>
+    <% if @food_entries.any? %>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+          <tr>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Description</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Consumed At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @food_entries.each do |food_entry| %>
+            <% 
+              edit_path = edit_food_entry_path(food_entry, return_to: request.url)
+              formatted_date = food_entry.consumed_at.strftime("%b %d, %Y at %l:%M %p").strip
+            %>
+            <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+              <td style="padding: 12px; border: 1px solid #ddd; background-color: #E8F5E9; color: #000;"><%= food_entry.description %></td>
+              <td style="padding: 12px; border: 1px solid #ddd; background-color: #E8F5E9; color: #000;"><%= formatted_date %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p style="margin-top: 20px; color: #000;">No food entries yet. <%= link_to "Create your first entry", new_food_entry_path %>.</p>
+    <% end %>
   <% end %>
 </div>

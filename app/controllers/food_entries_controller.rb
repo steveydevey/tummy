@@ -1,14 +1,22 @@
 class FoodEntriesController < ApplicationController
   def index
     @food_entries = FoodEntry.recent
-    @gi_symptoms = GiSymptom.recent
-    @bowel_movements = BowelMovement.recent
-    # Combine and sort by datetime for unified timeline view
-    @all_entries = (@food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
-                    @gi_symptoms.map { |s| { type: 'symptom', entry: s, datetime: s.occurred_at } } +
-                    @bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } })
-                  .sort_by { |e| e[:datetime] }
-                  .reverse
+    
+    # Only show all entries on root path, not on /food_entries
+    if request.path == root_path
+      @bowel_movements = BowelMovement.recent
+      @accidents = Accident.recent
+      # Combine and sort by datetime for unified timeline view
+      @all_entries = (@food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
+                      @bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } } +
+                      @accidents.map { |a| { type: 'accident', entry: a, datetime: a.occurred_at } })
+                    .sort_by { |e| e[:datetime] }
+                    .reverse
+      @show_all_entries = true
+    else
+      # Show only food entries when accessing /food_entries
+      @show_all_entries = false
+    end
   end
 
   def new

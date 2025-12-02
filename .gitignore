@@ -5,3 +5,13 @@ log/development.log
 tmp/*
 vendor/javascript/.keep
 tmp/cache/bootsnap/compile-cache-iseq/93/08f178adedafa1
+
+# Container data directory (volume mount location)
+/data
+/data/*
+!/data/.keep
+
+# Environment variables (contains secrets)
+.env
+.env.local
+.env.*.local

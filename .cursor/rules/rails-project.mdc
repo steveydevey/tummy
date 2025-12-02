@@ -1,6 +1,6 @@
 ---
 description: Rails Project Standards
-globs: "**/*.rb"
+globs: ["**/*.rb", "**/*.erb", "**/*.js"]
 ---
 
 # Rails Project Standards
@@ -60,6 +60,37 @@ globs: "**/*.rb"
 - Commit related changes together
 - Test before committing
 - Keep commits focused and atomic
+
+## JavaScript & Frontend
+
+- **Turbo Rails**: Application uses Turbo for SPA-like navigation
+- **Importmap**: JavaScript dependencies managed via importmap (no webpack/esbuild)
+- **Turbo Setup**: 
+  - Turbo is configured in `app/javascript/application.js`
+  - Layout includes `javascript_importmap_tags` in `<head>`
+  - Use `data: { turbo_method: :delete }` for delete links, not `method: :delete`
+  - Listen for both `DOMContentLoaded` and `turbo:load` events for page loads
+- **Datetime Autopopulation**: 
+  - All `datetime-local` fields auto-populate with current browser time if empty
+  - Handled in `app/javascript/application.js` via `autopopulateDatetimeFields()` function
+  - Works on both initial load and Turbo navigation
+
+## View Patterns
+
+- **Date Formatting**: Use human-readable format: `strftime("%b %d, %Y at %l:%M %p").strip`
+  - Example: "Jan 15, 2024 at 2:30 PM"
+- **Table Styling**:
+  - Food entries: Light green background `#E8F5E9`
+  - GI symptoms: Light blue background `#E3F2FD`
+  - Bowel movements: Light purple background `#F3E5F5`
+- **Clickable Rows**: Use `onclick="window.location.href='...'"` with `cursor: pointer` style
+- **Severity Display**:
+  - GI symptoms: Show in description as "Symptom Type - Severity/10" (e.g., "Nausea - 7/10")
+  - Bowel movements: Show as "Severity - Term" (e.g., "3 - Logs")
+  - No separate severity columns in tables
+- **Return To Navigation**: All edit forms use `return_to` parameter for navigation context
+  - Use `sanitize_return_to()` helper method in controllers
+  - Pass `return_to: request.url` when linking to edit forms
 
 ## Documentation
 

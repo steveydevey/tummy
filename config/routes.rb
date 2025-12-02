@@ -12,11 +12,11 @@ Rails.application.routes.draw do
   # Food entries routes
   resources :food_entries, except: [:show]
 
-  # GI symptoms routes
-  resources :gi_symptoms, except: [:show]
-
   # Bowel movements routes
   resources :bowel_movements, except: [:show]
+
+  # Accidents routes
+  resources :accidents, except: [:show]
 
   # Defines the root path route ("/")
   root "food_entries#index"

@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+# Wrapper entrypoint that fixes permissions as root, then switches to rails user
+# This handles volume-mounted directories that may have incorrect ownership
+
+# If we're root, fix permissions and switch to rails user
+if [ "$(id -u)" = "0" ]; then
+  # Ensure storage directory exists
+  mkdir -p /rails/storage
+  
+  # Fix ownership of storage directory (for volume mounts)
+  chown -R rails:rails /rails/storage 2>/dev/null || true
+  chmod 755 /rails/storage 2>/dev/null || true
+  
+  # Switch to rails user and run the actual entrypoint
+  exec gosu rails:rails /rails/bin/docker-entrypoint "$@"
+fi
+
+# If we're already rails user (shouldn't happen, but handle it)
+exec /rails/bin/docker-entrypoint "$@"
+
