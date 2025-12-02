@@ -30,14 +30,18 @@ class ApplicationController < ActionController::Base
     begin
       # Handle both full URLs and paths
       url_string = url.to_s
+      uri = nil
       
-      # If it's a full URL, extract just the path
+      # If it's a full URL, parse it
       if url_string.include?('://')
         uri = URI.parse(url_string)
         path = uri.path
+        query_string = uri.query
       else
         # It's already a path, but might have query params
-        path = url_string.split('?').first
+        parts = url_string.split('?', 2)
+        path = parts[0]
+        query_string = parts[1]
       end
       
       # Remove trailing slash for comparison
@@ -61,7 +65,13 @@ class ApplicationController < ActionController::Base
       
       # Only match if path is exactly one of the safe paths
       if safe_paths.key?(path)
-        return safe_paths[path]
+        base_path = safe_paths[path]
+        # Preserve query parameters if present (e.g., date parameter for root_path)
+        if query_string.present?
+          return "#{base_path}?#{query_string}"
+        else
+          return base_path
+        end
       end
       
       nil

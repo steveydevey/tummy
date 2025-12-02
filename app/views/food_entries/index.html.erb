@@ -70,9 +70,9 @@
     <% else %>
       <p style="margin-top: 20px; color: #000;">
         No entries for <%= @selected_date.strftime("%B %d, %Y") %>. 
-        <%= link_to "Create your first food entry", new_food_entry_path %>, 
-        <%= link_to "add a bowel movement", new_bowel_movement_path %>, or 
-        <%= link_to "add an accident", new_accident_path %>.
+        <%= link_to "Create your first food entry", new_food_entry_path(date: @selected_date, return_to: request.url) %>, 
+        <%= link_to "add a bowel movement", new_bowel_movement_path(date: @selected_date, return_to: request.url) %>, or 
+        <%= link_to "add an accident", new_accident_path(date: @selected_date, return_to: request.url) %>.
       </p>
     <% end %>
     
@@ -122,7 +122,7 @@
         </tbody>
       </table>
     <% else %>
-      <p style="margin-top: 20px; color: #000;">No food entries yet. <%= link_to "Create your first entry", new_food_entry_path %>.</p>
+      <p style="margin-top: 20px; color: #000;">No food entries yet. <%= link_to "Create your first entry", new_food_entry_path(return_to: request.url) %>.</p>
     <% end %>
   <% end %>
 </div>

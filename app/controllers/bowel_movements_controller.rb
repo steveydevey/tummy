@@ -5,14 +5,28 @@ class BowelMovementsController < ApplicationController
 
   def new
     @bowel_movement = BowelMovement.new
+    # Pre-populate date if provided
+    if params[:date].present?
+      begin
+        selected_date = Date.parse(params[:date])
+        # Set to noon on the selected date
+        @bowel_movement.occurred_at = selected_date.beginning_of_day + 12.hours
+      rescue ArgumentError
+        # Invalid date, ignore
+      end
+    end
+    # Store return_to for redirect after create
+    @return_to = sanitize_return_to(params[:return_to] || request.referer) || food_entries_path
   end
 
   def create
     @bowel_movement = BowelMovement.new(bowel_movement_params)
+    return_to = sanitize_return_to(params[:return_to]) || food_entries_path
 
     if @bowel_movement.save
-      redirect_to food_entries_path, notice: 'Bowel movement was successfully created.'
+      redirect_to return_to, notice: 'Bowel movement was successfully created.'
     else
+      @return_to = return_to
       render :new, status: :unprocessable_content
     end
   end

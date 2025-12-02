@@ -2,6 +2,7 @@
 <div style="max-width: 600px;">
 
   <%= form_with model: @food_entry, local: true do |form| %>
+    <%= hidden_field_tag :return_to, @return_to %>
     <% if @food_entry.errors.any? %>
       <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
         <h3 style="margin-top: 0;"><%= pluralize(@food_entry.errors.count, "error") %> prohibited this food entry from being saved:</h3>
