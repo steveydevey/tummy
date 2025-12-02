@@ -1,11 +1,11 @@
 <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #ddd;">
-  <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-    <%= link_to root_path, style: "display: flex; align-items: center; text-decoration: none; margin-right: 20px;" do %>
-      <%= image_tag "tummy.png", alt: "Gitrack Logo", style: "max-width: 60px; height: auto; margin-right: 10px;" %>
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+    <%= link_to root_path, style: "display: flex; align-items: center; text-decoration: none;" do %>
+      <%= image_tag "tummy.png", alt: "Tummy Logo", style: "max-width: 60px; height: auto; margin-right: 10px;" %>
       <span style="font-weight: bold; color: #000;">Today</span>
     <% end %>
     
-    <div style="display: flex; gap: 10px; flex-wrap: wrap; flex: 1;">
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
       <%= link_to "Add Food", new_food_entry_path(return_to: request.url), style: "background-color: #4CAF50; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>
       <%= link_to "Add BM", new_bowel_movement_path(return_to: request.url), style: "background-color: #9C27B0; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>
       <%= link_to "Add Accident", new_accident_path(return_to: request.url), style: "background-color: #FF9800; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>

@@ -1,4 +1,4 @@
-# Gitrack Architecture
+# Tummy Architecture
 
 ## System Architecture
 

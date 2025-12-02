@@ -27,7 +27,7 @@ services:
       # - Active Storage uploads
       - ./data:/rails/storage
     # Use Thruster for better performance (as configured in Containerfile)
-    # Override with: docker-compose run gitrack-web ./bin/rails server -b 0.0.0.0 -p 80
+    # Override with: docker-compose run tummy-web ./bin/rails server -b 0.0.0.0 -p 80
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/up"]

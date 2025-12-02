@@ -4,11 +4,11 @@
 # Modern Containerfile for Rails 8.1 application
 # This Containerfile follows OCI standards and Rails best practices
 # 
-# Build: podman build -t gitrack .
+# Build: podman build -t tummy .
 # Run: podman run -d -p 3000:80 \
 #   -e RAILS_MASTER_KEY=<value from config/master.key> \
 #   -v ./data:/rails/storage \
-#   --name gitrack gitrack
+#   --name tummy tummy
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.4.7

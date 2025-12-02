@@ -1,4 +1,4 @@
-# Gitrack - Food & GI Issues Tracker
+# Tummy - Food & GI Issues Tracker
 
 A multi-user web application for tracking food intake and gastrointestinal issues. Built with Ruby on Rails, designed for containerized deployment.
 
@@ -31,7 +31,7 @@ A multi-user web application for tracking food intake and gastrointestinal issue
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd gitrack
+   cd tummy
    ```
 
 2. **Install dependencies**
@@ -63,11 +63,11 @@ A multi-user web application for tracking food intake and gastrointestinal issue
 
 2. **Or build and run manually**
    ```bash
-   docker build -t gitrack .
+   docker build -t tummy .
    docker run -d -p 3000:80 \
      -e RAILS_MASTER_KEY=$(cat config/master.key) \
      -v $(pwd)/db/production.sqlite3:/rails/db/production.sqlite3 \
-     --name gitrack gitrack
+     --name tummy tummy
    ```
 
 ## Testing
@@ -88,7 +88,7 @@ bundle exec rspec
 ## Project Structure
 
 ```
-gitrack/
+tummy/
 ├── app/
 │   ├── models/          # ActiveRecord models
 │   ├── controllers/     # Application controllers

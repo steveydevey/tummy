@@ -9,7 +9,7 @@
 set -e
 
 REGISTRY="nas.lan:5003"
-IMAGE_NAME="gitrack"
+IMAGE_NAME="tummy"
 FULL_IMAGE="${REGISTRY}/${IMAGE_NAME}"
 
 # Determine version from TUMMY_VERSION env var, git tag, or generate one

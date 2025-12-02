@@ -9,10 +9,10 @@
         color: #000;
       }
     </style>
-    <title><%= content_for(:title) || "Gitrack" %></title>
+    <title><%= content_for(:title) || "Tummy" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Gitrack">
+    <meta name="application-name" content="Tummy">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -22,9 +22,10 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -34,20 +35,12 @@
   <body style="margin: 0; padding: 0; background-color: #ffffff; color: #000;">
     <!-- Header -->
     <header style="background-color: #f5f5f5; padding: 15px 20px; border-bottom: 1px solid #ddd;">
-      <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-        <%= link_to root_path, style: "display: flex; align-items: center; text-decoration: none; flex-shrink: 0;" do %>
-          <%= image_tag "tummy.png", alt: "Gitrack Logo", style: "max-width: 50px; height: auto;" %>
-        <% end %>
-        <h1 style="margin: 0; font-size: 20px; font-weight: bold; color: #000; flex: 1;">
-          <%= content_for(:page_title) || "Gitrack" %>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px;">
+        <h1 style="margin: 0; font-size: 20px; font-weight: bold; color: #000; text-align: center;">
+          <%= content_for(:page_title) || "Tummy" %>
         </h1>
-        <% if ENV['TUMMY_VERSION'].present? %>
-          <div style="font-size: 10px; color: #666; word-break: break-all; flex-shrink: 0;">
-            <%= ENV['TUMMY_VERSION'] %>
-          </div>
-        <% end %>
       </div>
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
         <%= link_to "Add Food", new_food_entry_path(return_to: request.url), style: "background-color: #4CAF50; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>
         <%= link_to "Add BM", new_bowel_movement_path(return_to: request.url), style: "background-color: #9C27B0; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>
         <%= link_to "Add Accident", new_accident_path(return_to: request.url), style: "background-color: #FF9800; color: white; padding: 10px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; white-space: nowrap;" %>

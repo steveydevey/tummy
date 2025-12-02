@@ -1,4 +1,4 @@
-# Gitrack - Food & GI Issues Tracker
+# Tummy - Food & GI Issues Tracker
 
 ## Project Overview
 
@@ -50,7 +50,7 @@ A multi-user web application for tracking food intake and gastrointestinal issue
 ## Project Structure
 
 ```
-gitrack/
+tummy/
 ├── .cursor/
 │   └── rules/
 │       └── rails-project.mdc

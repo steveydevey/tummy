@@ -1,6 +1,6 @@
 # Setup Complete! 🎉
 
-Your Gitrack project has been successfully initialized and configured.
+Your Tummy project has been successfully initialized and configured.
 
 ## What's Been Set Up
 
