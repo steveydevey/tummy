@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :bowel_movement do
-    occurred_at { "2025-11-30 22:08:41" }
+    occurred_at { Time.current }
     severity { 1 }
-    notes { "MyText" }
+    notes { 'Normal movement' }
   end
 end

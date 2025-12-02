@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :accident do
-    occurred_at { "2025-12-02 02:00:10" }
-    accident_type { "pee" }
-    notes { "MyText" }
+    occurred_at { Time.current }
+    accident_type { 'pee' }
+    notes { 'Accident notes' }
   end
 end
 
