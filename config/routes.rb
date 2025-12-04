@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   # Accidents routes
   resources :accidents, except: [:show]
 
+  # Miralax caps routes
+  resources :miralax_caps, except: [:show]
+
   # Timeline view for all entries
   get "timeline", to: "food_entries#timeline", as: :timeline
 

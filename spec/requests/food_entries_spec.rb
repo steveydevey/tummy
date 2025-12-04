@@ -164,4 +164,72 @@ RSpec.describe 'FoodEntries', type: :request do
       expect(response.body).to include('ACCIDENT')
     end
   end
+
+  describe 'GET / (root path with date filtering)' do
+    it 'filters entries by date when date parameter is provided' do
+      target_date = 2.days.ago.to_date
+      food_entry_today = create(:food_entry, description: 'TodayEntry', consumed_at: Time.current)
+      food_entry_target = create(:food_entry, description: 'TargetDateEntry', consumed_at: target_date.beginning_of_day + 12.hours)
+      
+      get root_path, params: { date: target_date.to_s }
+      expect(response.body).to include('TargetDateEntry')
+      expect(response.body).not_to include('TodayEntry')
+    end
+
+    it 'defaults to today when no date parameter' do
+      food_entry_today = create(:food_entry, description: 'TodayEntry', consumed_at: Time.current)
+      food_entry_yesterday = create(:food_entry, description: 'YesterdayEntry', consumed_at: 1.day.ago)
+      
+      get root_path
+      expect(response.body).to include('TodayEntry')
+    end
+
+    it 'handles invalid date parameter gracefully' do
+      get root_path, params: { date: 'invalid-date' }
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'date pre-population' do
+    it 'pre-populates date when date parameter is provided' do
+      target_date = 1.day.ago.to_date
+      get new_food_entry_path, params: { date: target_date.to_s }
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'return_to parameter handling' do
+    it 'redirects to return_to after create' do
+      valid_params = {
+        food_entry: {
+          description: 'Test',
+          consumed_at: Time.current
+        },
+        return_to: timeline_path
+      }
+      
+      post food_entries_path, params: valid_params
+      expect(response).to redirect_to(timeline_path)
+    end
+
+    it 'redirects to return_to after update' do
+      food_entry = create(:food_entry)
+      valid_params = {
+        food_entry: {
+          description: 'Updated',
+          consumed_at: Time.current
+        },
+        return_to: timeline_path
+      }
+      
+      patch food_entry_path(food_entry), params: valid_params
+      expect(response).to redirect_to(timeline_path)
+    end
+
+    it 'redirects to return_to after destroy' do
+      food_entry = create(:food_entry)
+      delete food_entry_path(food_entry), params: { return_to: timeline_path }
+      expect(response).to redirect_to(timeline_path)
+    end
+  end
 end

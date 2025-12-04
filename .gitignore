@@ -20,3 +20,6 @@ tmp/cache/bootsnap/compile-cache-iseq/93/08f178adedafa1
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# Test coverage reports
+/coverage
+

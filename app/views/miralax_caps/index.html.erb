@@ -1,0 +1,30 @@
+<% content_for :page_title, "Miralax Caps" %>
+<div>
+
+  <% if @miralax_caps.any? %>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Amount</th>
+          <th style="padding: 12px; text-align: left; border: 1px solid #ddd; background-color: #f2f2f2; color: #000;">Occurred At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @miralax_caps.each do |cap| %>
+          <% 
+            edit_path = edit_miralax_cap_path(cap, return_to: request.url)
+            formatted_date = cap.occurred_at.strftime("%b %d, %Y at %l:%M %p").strip
+            description = cap.amount.present? ? cap.amount_label : "-"
+          %>
+          <tr onclick="window.location.href='<%= edit_path %>'" style="cursor: pointer;">
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #E1F5FE; color: #000;"><%= description %></td>
+            <td style="padding: 12px; border: 1px solid #ddd; background-color: #E1F5FE; color: #000;"><%= formatted_date %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p style="margin-top: 20px; color: #000;">No miralax caps yet. <%= link_to "Create your first entry", new_miralax_cap_path %>.</p>
+  <% end %>
+</div>
+

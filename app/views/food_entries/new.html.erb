@@ -1,5 +1,5 @@
 <% content_for :page_title, "New Food Entry" %>
-<div style="max-width: 600px;">
+<div style="max-width: 600px; margin: 0 auto;">
 
   <%= form_with model: @food_entry, local: true do |form| %>
     <%= hidden_field_tag :return_to, @return_to %>

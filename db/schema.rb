@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_02_020010) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_03_013914) do
   create_table "accidents", force: :cascade do |t|
     t.string "accident_type"
     t.datetime "created_at", null: false
@@ -32,6 +32,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_02_020010) do
     t.datetime "created_at", null: false
     t.text "description"
     t.text "notes"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "miralax_caps", force: :cascade do |t|
+    t.decimal "amount", precision: 3, scale: 1
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.datetime "occurred_at"
     t.datetime "updated_at", null: false
   end
 end

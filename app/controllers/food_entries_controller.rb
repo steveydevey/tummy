@@ -15,9 +15,10 @@ class FoodEntriesController < TrackableEntriesController
       @food_entries = FoodEntry.on_date(@selected_date).recent
       @bowel_movements = BowelMovement.on_date(@selected_date).recent
       @accidents = Accident.on_date(@selected_date).recent
+      @miralax_caps = MiralaxCap.on_date(@selected_date).recent
 
       # Combine and sort by datetime for unified timeline view
-      @all_entries = build_timeline_entries(@food_entries, @bowel_movements, @accidents)
+      @all_entries = build_timeline_entries(@food_entries, @bowel_movements, @accidents, @miralax_caps)
       @show_all_entries = true
     else
       # Show only food entries when accessing /food_entries
@@ -30,9 +31,10 @@ class FoodEntriesController < TrackableEntriesController
     @food_entries = FoodEntry.recent
     @bowel_movements = BowelMovement.recent
     @accidents = Accident.recent
+    @miralax_caps = MiralaxCap.recent
 
     # Combine and sort by datetime for unified timeline view
-    @all_entries = build_timeline_entries(@food_entries, @bowel_movements, @accidents)
+    @all_entries = build_timeline_entries(@food_entries, @bowel_movements, @accidents, @miralax_caps)
   end
 
   private
@@ -61,10 +63,11 @@ class FoodEntriesController < TrackableEntriesController
     'Food entry'
   end
 
-  def build_timeline_entries(food_entries, bowel_movements, accidents)
+  def build_timeline_entries(food_entries, bowel_movements, accidents, miralax_caps)
     (food_entries.map { |e| { type: 'food', entry: e, datetime: e.consumed_at } } +
      bowel_movements.map { |b| { type: 'bowel_movement', entry: b, datetime: b.occurred_at } } +
-     accidents.map { |a| { type: 'accident', entry: a, datetime: a.occurred_at } })
+     accidents.map { |a| { type: 'accident', entry: a, datetime: a.occurred_at } } +
+     miralax_caps.map { |m| { type: 'miralax_cap', entry: m, datetime: m.occurred_at } })
       .sort_by { |e| e[:datetime] }
       .reverse
   end

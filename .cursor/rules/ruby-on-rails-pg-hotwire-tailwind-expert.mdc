@@ -52,6 +52,8 @@ alwaysApply: true
   Testing
   - Write comprehensive tests using RSpec or Minitest.
   - Follow TDD/BDD practices.
+  - Write tests before writing functioning code.
+  - Ensure tests pass before considering the feature to be complete.
   - Use factories (FactoryBot) for test data generation.
   
   Security

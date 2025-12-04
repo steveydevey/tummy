@@ -23,6 +23,9 @@
             elsif item[:type] == 'accident'
               bg_color = '#FFF3E0'
               edit_path = edit_accident_path(item[:entry], return_to: request.url)
+            elsif item[:type] == 'miralax_cap'
+              bg_color = '#E1F5FE'
+              edit_path = edit_miralax_cap_path(item[:entry], return_to: request.url)
             end
             
             # Format date/time
@@ -36,6 +39,8 @@
                 <span style="background-color: #9C27B0; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">BM</span>
               <% elsif item[:type] == 'accident' %>
                 <span style="background-color: #FF9800; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">ACCIDENT</span>
+              <% elsif item[:type] == 'miralax_cap' %>
+                <span style="background-color: #00BCD4; color: white; padding: 4px 8px; border-radius: 3px; font-size: 12px;">MIRALAX</span>
               <% end %>
             </td>
             <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
@@ -49,6 +54,8 @@
                 <% end %>
               <% elsif item[:type] == 'accident' %>
                 <%= item[:entry].accident_type_label || '-' %>
+              <% elsif item[:type] == 'miralax_cap' %>
+                <%= item[:entry].amount_label || '-' %>
               <% end %>
             </td>
             <td style="padding: 12px; border: 1px solid #ddd; background-color: <%= bg_color %>; color: #000;">
@@ -62,8 +69,9 @@
     <p style="margin-top: 20px; color: #000;">
       No entries yet. 
       <%= link_to "Create your first food entry", new_food_entry_path %>, 
-      <%= link_to "add a bowel movement", new_bowel_movement_path %>, or 
-      <%= link_to "add an accident", new_accident_path %>.
+      <%= link_to "add a bowel movement", new_bowel_movement_path %>, 
+      <%= link_to "add an accident", new_accident_path %>, or 
+      <%= link_to "add a miralax cap", new_miralax_cap_path %>.
     </p>
   <% end %>
 </div>

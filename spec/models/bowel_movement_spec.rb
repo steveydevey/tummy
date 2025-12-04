@@ -40,27 +40,27 @@ RSpec.describe BowelMovement, type: :model do
   describe '#severity_term' do
     it 'returns the correct term for severity 1' do
       movement = build(:bowel_movement, severity: 1)
-      expect(movement.severity_term).to eq('Liquid')
+      expect(movement.severity_term).to eq('Hard Pellets')
     end
 
     it 'returns the correct term for severity 2' do
       movement = build(:bowel_movement, severity: 2)
-      expect(movement.severity_term).to eq('Mush')
+      expect(movement.severity_term).to eq('Hard Log')
     end
 
     it 'returns the correct term for severity 3' do
       movement = build(:bowel_movement, severity: 3)
-      expect(movement.severity_term).to eq('Firm')
+      expect(movement.severity_term).to eq('Smooth/soft log (Ideal)')
     end
 
     it 'returns the correct term for severity 4' do
       movement = build(:bowel_movement, severity: 4)
-      expect(movement.severity_term).to eq('Logs')
+      expect(movement.severity_term).to eq('Soft blobs')
     end
 
     it 'returns the correct term for severity 5' do
       movement = build(:bowel_movement, severity: 5)
-      expect(movement.severity_term).to eq('Pebbles')
+      expect(movement.severity_term).to eq('Watery')
     end
 
     it 'returns nil when severity is nil' do
